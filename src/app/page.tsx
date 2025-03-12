@@ -1,103 +1,178 @@
-import Image from "next/image";
+/* eslint-disable react/no-unescaped-entities */
+'use client';
+
+import { useState, useEffect } from 'react';
+import Link from 'next/link';
+import Image from 'next/image';
+import { motion } from 'framer-motion';
+import FeaturedProjects from '@/components/home/FeaturedProjects';
+import FeaturedAchievements from '@/components/home/FeaturedAchievements';
+import RecentBlogPosts from '@/components/home/RecentBlogPosts';
+import FeaturedSkills from '@/components/home/FeaturedSkills';
+import TestimonialSlider from '@/components/home/TestimonialSlider';
 
 export default function Home() {
-  return (
-    <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
-      <main className="flex flex-col gap-[32px] row-start-2 items-center sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol className="list-inside list-decimal text-sm/6 text-center sm:text-left font-[family-name:var(--font-geist-mono)]">
-          <li className="mb-2 tracking-[-.01em]">
-            Get started by editing{" "}
-            <code className="bg-black/[.05] dark:bg-white/[.06] px-1 py-0.5 rounded font-[family-name:var(--font-geist-mono)] font-semibold">
-              src/app/page.tsx
-            </code>
-            .
-          </li>
-          <li className="tracking-[-.01em]">
-            Save and see your changes instantly.
-          </li>
-        </ol>
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const [loading, setLoading] = useState(true);
 
-        <div className="flex gap-4 items-center flex-col sm:flex-row">
-          <a
-            className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:w-auto"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
-            />
-            Deploy now
-          </a>
-          <a
-            className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 w-full sm:w-auto md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Read our docs
-          </a>
+  useEffect(() => {
+    // Simulate loading data
+    const timer = setTimeout(() => {
+      setLoading(false);
+    }, 500);
+
+    return () => clearTimeout(timer);
+  }, []);
+
+  // Animation variants for staggered animations
+  const containerVariants = {
+    hidden: { opacity: 0 },
+    visible: {
+      opacity: 1,
+      transition: {
+        staggerChildren: 0.1
+      }
+    }
+  };
+
+  const itemVariants = {
+    hidden: { y: 20, opacity: 0 },
+    visible: {
+      y: 0,
+      opacity: 1,
+      transition: {
+        duration: 0.5,
+        ease: "easeOut"
+      }
+    }
+  };
+
+  return (
+    <>
+      {/* Hero Section with Background Image */}
+      <section className="relative h-screen flex items-center justify-center text-white">
+        {/* Background Image with overlay */}
+        <div className="absolute inset-0 z-0">
+          <Image
+            src="/images/hero-bg.jpg" // You'll need to add this image
+            alt="Ankit Dutta"
+            fill
+            style={{ objectFit: 'cover' }}
+            priority
+            quality={90}
+          />
+          <div className="absolute inset-0 bg-black opacity-50"></div>
         </div>
-      </main>
-      <footer className="row-start-3 flex gap-[24px] flex-wrap items-center justify-center">
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
+
+        {/* Hero Content */}
+        <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+          <motion.div
+            initial={{ y: 30, opacity: 0 }}
+            animate={{ y: 0, opacity: 1 }}
+            transition={{ duration: 0.8, ease: "easeOut" }}
+          >
+            <h1 className="text-4xl sm:text-5xl md:text-6xl font-bold mb-4">
+              Hi, I'm <span className="text-indigo-400">Ankit Dutta</span>
+            </h1>
+            <p className="text-xl md:text-2xl mb-8 max-w-3xl mx-auto">
+              Grade 10 student passionate about swimming, guitar, coding, and STEM
+            </p>
+            <div className="flex flex-col sm:flex-row gap-4 justify-center">
+              <Link href="/about" className="bg-indigo-600 hover:bg-indigo-700 transition-colors px-6 py-3 rounded-md font-medium">
+                Learn More
+              </Link>
+              <Link href="/contact" className="bg-transparent border-2 border-white hover:bg-white hover:text-indigo-900 transition-colors px-6 py-3 rounded-md font-medium">
+                Get in Touch
+              </Link>
+            </div>
+          </motion.div>
+        </div>
+
+        {/* Scroll Down Indicator */}
+        <motion.div 
+          className="absolute bottom-8 left-1/2 transform -translate-x-1/2 cursor-pointer"
+          animate={{ y: [0, 10, 0] }}
+          transition={{ repeat: Infinity, duration: 1.5 }}
+          onClick={() => window.scrollTo({ top: window.innerHeight, behavior: 'smooth' })}
         >
-          <Image
-            aria-hidden
-            src="/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
-          />
-          Learn
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
-      </footer>
-    </div>
+          <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 14l-7 7m0 0l-7-7m7 7V3" />
+          </svg>
+        </motion.div>
+      </section>
+
+      {/* About Overview Section */}
+      <section className="py-20 bg-gray-50">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <motion.div 
+            className="flex flex-col md:flex-row items-center gap-12"
+            variants={containerVariants}
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, margin: "-100px" }}
+          >
+            <motion.div variants={itemVariants} className="md:w-1/2">
+              <Image
+                src="/images/profile.jpg" // You'll need to add this image
+                alt="Ankit Dutta"
+                width={500}
+                height={500}
+                className="rounded-lg shadow-xl object-cover"
+                style={{ maxWidth: "100%", height: "auto" }}
+              />
+            </motion.div>
+            <motion.div variants={itemVariants} className="md:w-1/2">
+              <h2 className="text-3xl font-bold mb-6 text-gray-900">About Me</h2>
+              <p className="text-gray-700 mb-6 text-lg">
+                I'm a grade 10 student at Cameron Heights Collegiate Institute with a passion for learning and growth. 
+                I divide my time between competitive swimming with the ROW Swim Team, playing guitar, and exploring various 
+                aspects of coding and STEM fields.
+              </p>
+              <Link href="/about" className="text-indigo-600 font-medium flex items-center hover:text-indigo-800 transition-colors">
+                Read more about me
+                <svg className="w-5 h-5 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14 5l7 7m0 0l-7 7m7-7H3" />
+                </svg>
+              </Link>
+            </motion.div>
+          </motion.div>
+        </div>
+      </section>
+
+      {/* Featured Projects */}
+      <FeaturedProjects />
+
+      {/* Achievements Highlights */}
+      <FeaturedAchievements />
+
+      {/* Recent Blog Posts */}
+      <RecentBlogPosts />
+
+      {/* Skills Overview */}
+      <FeaturedSkills />
+
+      {/* Testimonials Section */}
+      <TestimonialSlider />
+
+      {/* Call to Action */}
+      <section className="py-20 bg-indigo-700 text-white">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+          <motion.div
+            initial={{ opacity: 0 }}
+            whileInView={{ opacity: 1 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.5 }}
+          >
+            <h2 className="text-3xl font-bold mb-6">Interested in Connecting?</h2>
+            <p className="text-xl mb-8 max-w-3xl mx-auto">
+              Feel free to reach out if you'd like to collaborate, have questions, or just want to say hello!
+            </p>
+            <Link href="/contact" className="bg-white text-indigo-700 hover:bg-gray-100 transition-colors px-8 py-3 rounded-md font-medium inline-block">
+              Contact Me
+            </Link>
+          </motion.div>
+        </div>
+      </section>
+    </>
   );
 }
